@@ -68,7 +68,7 @@
     <section class="hash-section secure">
       <div class="hash-header">
         <div>
-          <p class="hash-title">PBKDF2</p>
+          <p class="hash-title">Bcrypt</p>
           <p class="hash-label">Estándar moderno con salt</p>
         </div>
         <span class="chip chip-success">SEGURO</span>
@@ -79,7 +79,7 @@
           <mat-label>Texto a hashear</mat-label>
           <input matInput [(ngModel)]="argonText" (ngModelChange)="onArgonInput($event)">
         </mat-form-field>
-        <button mat-raised-button color="primary" class="action-button" (click)="hashSeguroPBKDF2()">Hash</button>
+        <button mat-raised-button color="primary" class="action-button" (click)="hashSeguroBcrypt()">Hash</button>
       </div>
 
       @if (argonHash) {

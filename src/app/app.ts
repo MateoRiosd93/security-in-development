@@ -4,6 +4,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import * as CryptoJS from 'crypto-js';
+import * as bcrypt from 'bcryptjs';
 
 
 @Component({
@@ -56,43 +57,12 @@ export class App {
     }
   }
 
-  async hashSeguroPBKDF2() {
+  async hashSeguroBcrypt() {
     if (!this.argonText?.trim()) {
       this.argonHash = '';
       return;
     }
 
-    const encoder = new TextEncoder();
-    const passwordBytes = encoder.encode(this.argonText);
-
-    // ✅ Crear salt seguro
-    const salt = crypto.getRandomValues(new Uint8Array(16));
-
-    // ✅ Importar la contraseña como key
-    const key = await crypto.subtle.importKey(
-      'raw',
-      passwordBytes,
-      { name: 'PBKDF2' },
-      false,
-      ['deriveBits']
-    );
-
-    // ✅ Derivar bits con PBKDF2
-    const derivedBits = await crypto.subtle.deriveBits(
-      {
-        name: 'PBKDF2',
-        salt,
-        iterations: 150_000,
-        hash: 'SHA-256'
-      },
-      key,
-      256
-    );
-
-    // ✅ Convertir a hex para mostrar
-    const hashArray = Array.from(new Uint8Array(derivedBits));
-    this.argonHash = hashArray
-      .map(b => b.toString(16).padStart(2, '0'))
-      .join('');
+    this.argonHash = await bcrypt.hash(this.argonText, 10);
   }
 }
